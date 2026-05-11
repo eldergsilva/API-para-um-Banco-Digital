@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "date-fns": "^2.30.0",
-    "express": "^4.18.2"
+    "express": "^4.22.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.14"
   },
   "name": "api-para-um-banco-digital",
   "description": "Esse projeto é uma RESTful API que permite ,Criar conta bancária, Listar contas bancárias, Excluir Etc",

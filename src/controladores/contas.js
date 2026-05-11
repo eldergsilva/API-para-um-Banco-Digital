@@ -7,7 +7,12 @@ let idProximoContaCriada = 1
 
 const listarContas = (req, res) => {
     const senhaBanco = req.query.senha_banco;
-    if (!senhaBanco || senhaBanco !== bancodedados.banco.senha) {
+
+    if (!senhaBanco) {
+      return res.status(400).json({ mensagem: "A senha do banco é obrigatoria!" });
+    } 
+
+    if (senhaBanco !== bancodedados.banco.senha) {
       return res.status(400).json({ mensagem: "A senha do banco informada é inválida!" });
     }  
     const contas = bancodedados.contas;    
