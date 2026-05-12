@@ -43,50 +43,68 @@ const excluirConta = (req, res) => {
   }
 
 
-  const criarConta = (req, res) => {  
-    const {
+  const criarConta = (req, res) => {
+  const {
+    nome,
+    cpf,
+    data_nascimento,
+    telefone,
+    email,
+    senha
+  } = req.body;
+
+ 
+  if (!nome) {
+    return res.status(400).json({ mensagem: "O campo 'nome' é obrigatório." });
+  }
+  if (!cpf) {
+    return res.status(400).json({ mensagem: "O campo 'cpf' é obrigatório." });
+  }
+  if (!data_nascimento) {
+    return res.status(400).json({ mensagem: "O campo 'data_nascimento' é obrigatório." });
+  }
+  if (!telefone) {
+    return res.status(400).json({ mensagem: "O campo 'telefone' é obrigatório." });
+  }
+  if (!email) {
+    return res.status(400).json({ mensagem: "O campo 'email' é obrigatório." });
+  }
+  if (!senha) {
+    return res.status(400).json({ mensagem: "O campo 'senha' é obrigatório." });
+  }
+
+
+  const contaExistente = bancodedados.contas.find(
+    (conta) => conta.usuario.cpf === cpf || conta.usuario.email === email
+  );
+
+  if (contaExistente) {
+    return res.status(400).json({ mensagem: "Já existe uma conta com o CPF ou e-mail informado!" });
+  }
+
+ 
+  const ultimaConta = bancodedados.contas[bancodedados.contas.length - 1];
+  idProximoContaCriada = ultimaConta ? parseInt(ultimaConta.numero) + 1 : idProximoContaCriada;
+
+  const novaConta = {
+    numero: idProximoContaCriada.toString(),
+    saldo: 0,
+    usuario: {
       nome,
       cpf,
       data_nascimento,
       telefone,
       email,
-      senha
-    } = req.body;
-  
-    if (!nome || !cpf || !data_nascimento || !telefone || !email || !senha) {
-      return res.status(400).json({ mensagem: "Todos os campos são obrigatórios!" });
-    }
-  
-    const contaExistente = bancodedados.contas.find(
-      (conta) => conta.cpf === cpf || conta.usuario.email === email
-    );
-  
-    if (contaExistente) {
-      return res.status(400).json({ mensagem: "Já existe uma conta com o CPF ou e-mail informado!" });
-    }    
-  
-    const ultimaConta = bancodedados.contas[bancodedados.contas.length - 1];
-    idProximoContaCriada = ultimaConta ? parseInt(ultimaConta.numero) + 1 : idProximoContaCriada;
-  
-    const novaConta = {
-      numero: idProximoContaCriada.toString(),
-      saldo: 0,
-      transferencias: [],
-      usuario: {
-        nome,
-        cpf,
-        data_nascimento,
-        telefone,
-        email,
-        senha,
-      },
-    };
-    
-    idProximoContaCriada++;
-    bancodedados.contas.push(novaConta);
-  
-    return res.status(201).send();
-  }
+      senha,
+    },
+  };
+
+  idProximoContaCriada++;
+  bancodedados.contas.push(novaConta);
+
+  return res.status(201).send();
+}
+
 
   const AtualizarUsuarioContaBancaria = async (req, res) => {
     const numeroConta = req.params.numeroConta;
