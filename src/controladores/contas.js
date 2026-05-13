@@ -19,30 +19,6 @@ const listarContas = (req, res) => {
     return res.status(200).json(contas);
     
 }
-
-
-const excluirConta = (req, res) => {  
-  const numeroConta = req.params.numeroConta; 
-  const contaExistente = bancodedados.contas.some((conta) => conta.numero === numeroConta);
-
-  if (!contaExistente) {
-    return res.status(404).json({ mensagem: "Conta bancária não encontrada!" });
-  }
-
-
-  const conta = bancodedados.contas.find((conta) => conta.numero === numeroConta);
-
-  if (conta.saldo !== 0) {
-    return res.status(400).json({ mensagem: "A conta só pode ser removida se o saldo for zero!" });
-  }
-
-
-  bancodedados.contas = bancodedados.contas.filter((conta) => conta.numero !== numeroConta);
-
-  return res.status(204).send();
-  }
-
-
   const criarConta = (req, res) => {
   const {
     nome,
@@ -157,6 +133,27 @@ const excluirConta = (req, res) => {
         return res.status(500).json({ mensagem: "Erro interno do servidor" });
     }
 }
+
+const excluirConta = (req, res) => {  
+  const numeroConta = req.params.numeroConta; 
+  const contaExistente = bancodedados.contas.some((conta) => conta.numero === numeroConta);
+
+  if (!contaExistente) {
+    return res.status(404).json({ mensagem: "Conta bancária não encontrada!" });
+  }
+
+
+  const conta = bancodedados.contas.find((conta) => conta.numero === numeroConta);
+
+  if (conta.saldo !== 0) {
+    return res.status(404).json({ mensagem: "A conta só pode ser removida se o saldo for zero!" });
+  }
+
+
+  bancodedados.contas = bancodedados.contas.filter((conta) => conta.numero !== numeroConta);
+
+  return res.status(204).send();
+  }
   
   
 
