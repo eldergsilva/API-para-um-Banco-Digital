@@ -3,8 +3,6 @@ let {identificadorContas}= require('../bancodedados');
 const { format } = require('date-fns');
 let idProximoContaCriada = 1
 
-
-
 const listarContas = (req, res) => {
     const senhaBanco = req.query.senha_banco;
 
@@ -80,8 +78,6 @@ const listarContas = (req, res) => {
 
   return res.status(201).send();
 }
-
-
   const AtualizarUsuarioContaBancaria = async (req, res) => {
     const numeroConta = req.params.numeroConta;
     const {
@@ -142,19 +138,16 @@ const excluirConta = (req, res) => {
     return res.status(404).json({ mensagem: "Conta bancária não encontrada!" });
   }
 
-
   const conta = bancodedados.contas.find((conta) => conta.numero === numeroConta);
 
   if (conta.saldo !== 0) {
     return res.status(404).json({ mensagem: "A conta só pode ser removida se o saldo for zero!" });
   }
-
-
+  
   bancodedados.contas = bancodedados.contas.filter((conta) => conta.numero !== numeroConta);
 
   return res.status(204).send();
-  }
-  
+  }  
   
 
 module.exports = {
