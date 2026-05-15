@@ -191,7 +191,6 @@ const transferirParaUmaConta = async (req, res) => {
     if (valor > contaOrigem.saldo) {
       return res.status(400).json({ mensagem: "Saldo insuficiente!" });
     }
-
      
     contaOrigem.saldo -= valor;
     contaDestino.saldo += valor;
